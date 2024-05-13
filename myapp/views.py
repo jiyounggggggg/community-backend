@@ -27,3 +27,7 @@ def create_post(request):
         else:
             print("Errors: ", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+def post_list(request):
+    posts = Post.objects.all().values("id", "title", "author", "content", "created_at")
+    return JsonResponse(list(posts), safe=False)
