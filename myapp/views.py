@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Message, Post
 from django.http import JsonResponse
 from django.utils import timezone
-from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework import status, viewsets
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from .models import Post
 from .serializers import PostSerializer
@@ -31,3 +31,9 @@ def create_post(request):
 def post_list(request):
     posts = Post.objects.all().values("id", "title", "author", "content", "created_at")
     return JsonResponse(list(posts), safe=False)
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.defer('content')
+    serializer_class = PostSerializer
+    
+    
