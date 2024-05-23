@@ -1,3 +1,4 @@
+from venv import logger
 from django.shortcuts import render, redirect
 from .models import Message, Post
 from django.http import JsonResponse
@@ -5,8 +6,8 @@ from django.utils import timezone
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer
 
 
 # Create your views here.
@@ -33,7 +34,10 @@ def post_list(request):
     return JsonResponse(list(posts), safe=False)
 
 class PostViewSet(viewsets.ModelViewSet):
+    logger.info("PostViewSet")
     queryset = Post.objects.defer('content')
     serializer_class = PostSerializer
-    
-    
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

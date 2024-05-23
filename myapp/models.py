@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Message(models.Model):
@@ -21,3 +22,14 @@ class Post(models.Model):
     class Meta:
         verbose_name = "게시글"
         verbose_name_plural = "게시글"
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.content[:20]
