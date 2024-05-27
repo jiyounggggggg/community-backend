@@ -25,8 +25,11 @@ router.register(r"comments", CommentViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('api/', include('community.urls')),
+
+    # todo delete this
     path("api/messages/", message_list, name="message_list"),
     path("api/post/", create_post, name="create_post"),
     path("api/board/list/", post_list, name="post_list"),
-    path("api/", include(router.urls)),
+    path("apiold/", include(router.urls)),
 ]
