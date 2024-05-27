@@ -16,20 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from myapp.views import create_post, message_list, post_list, PostViewSet, CommentViewSet
-from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
-router.register(r"posts", PostViewSet)
-router.register(r"comments", CommentViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/', include('community.urls')),
+    path("api/", include("users.urls")),
+    path("api/", include("community.urls")),
 
     # todo delete this
-    path("api/messages/", message_list, name="message_list"),
-    path("api/post/", create_post, name="create_post"),
-    path("api/board/list/", post_list, name="post_list"),
-    path("apiold/", include(router.urls)),
+    # path("api/messages/", message_list, name="message_list"),
+    # path("api/post/", create_post, name="create_post"),
+    # path("api/board/list/", post_list, name="post_list"),
+    # path("apiold/", include(router.urls)),
 ]

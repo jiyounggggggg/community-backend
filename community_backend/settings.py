@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "myapp",
     "community",
+    "users",
 ]
 
 # Django REST Framework 설정
@@ -70,6 +71,9 @@ ROOT_URLCONF = "community_backend.urls"
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Next.js 서버
 ]
+
+
+SITE_ID = 1
 
 
 TEMPLATES = [
@@ -113,6 +117,17 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+
+# 추가적인 설정
+REST_USE_JWT = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Internationalization
