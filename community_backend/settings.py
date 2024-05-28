@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
     "myapp",
     "community",
@@ -50,6 +51,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
@@ -71,6 +73,9 @@ ROOT_URLCONF = "community_backend.urls"
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Next.js 서버
 ]
+
+# CORS 설정 (개발 중)
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 SITE_ID = 1

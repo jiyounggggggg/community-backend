@@ -16,15 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+from myapp.views import create_post
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("users.urls")),
     path("api/", include("community.urls")),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # todo delete this
     # path("api/messages/", message_list, name="message_list"),
-    # path("api/post/", create_post, name="create_post"),
+    path("api/post/", create_post, name="create_post"),
     # path("api/board/list/", post_list, name="post_list"),
     # path("apiold/", include(router.urls)),
 ]
