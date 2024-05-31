@@ -21,6 +21,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     
+    def get_queryset(self):
+        post_id = self.request.query_params.get('post')
+        if post_id:
+            return self.queryset.filter(post_id=post_id, parent__isnull=True)
+        return self.queryset.none()
+    
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer    
