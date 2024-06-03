@@ -3,9 +3,10 @@ from .models import Post, Comment, Board
 
 class PostSerializer(serializers.ModelSerializer):
     comment_count = serializers.IntegerField(read_only=True)
+    board_name = serializers.CharField(source='board.name', read_only=True)
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'title', 'content', 'created_at', 'updated_at', 'created_by', 'views', 'comment_count', 'board_name', 'board']
         extra_fields = ['comment_count']
 
 class CommentSerializer(serializers.ModelSerializer):
