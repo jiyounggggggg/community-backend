@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Post, Comment, Board
-from .serializers import PostSerializer, CommentSerializer, BoardSerializer
+from .serializers import BoardPostsSerializer, PostSerializer, CommentSerializer, BoardSerializer
 from django.db.models import Count
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
@@ -29,4 +32,25 @@ class CommentViewSet(viewsets.ModelViewSet):
     
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all()
-    serializer_class = BoardSerializer    
+    serializer_class = BoardSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'with_posts':
+            return BoardPostsSerializer
+        return BoardSerializer
+
+    @action(detail=True, methods=['get'], url_path='with-posts')
+    def with_posts(self, request, pk=None):
+        board = self.get_object()
+        serializer = self.get_serializer(board)
+        return Response({
+            'board': {
+                'id': serializer.data['id'],
+                'name': serializer.data['name'],
+                'description': serializer.data['description'],
+                'created_at': serializer.data['created_at'],
+                'updated_at': serializer.data['updated_at'],
+                'created_by': serializer.data['created_by']
+            },
+            'posts': serializer.data['posts'],
+        })    
