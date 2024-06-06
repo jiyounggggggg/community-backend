@@ -19,6 +19,18 @@ class PostViewSet(viewsets.ModelViewSet):
         # 댓글 수를 주석으로 추가
         queryset = queryset.annotate(comment_count=Count('comments'))
         return queryset
+    
+    def create(self, request, *args, **kwargs):
+        print("Received request:", request.data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def perform_create(self, serializer):
+        serializer.save()
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
