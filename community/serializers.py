@@ -7,7 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='created_by.username', read_only=True)
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'created_at', 'updated_at', 'created_by', 'views', 'comment_count', 'board_name', 'username']
+        fields = ['id', 'title', 'content', 'created_at', 'updated_at', 'created_by', 'views', 'comment_count', 'board_name', 'username', 'board']
         extra_fields = ['comment_count']
 
 class CommentSerializer(serializers.ModelSerializer):
